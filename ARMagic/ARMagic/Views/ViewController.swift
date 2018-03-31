@@ -131,10 +131,10 @@ class ViewController: UIViewController {
         let ballNode = scene.rootNode.childNode(withName: "ball", recursively: false),
         let currentTransform = sceneView.session.currentFrame?.camera.transform else { return }
         ballNode.simdTransform = currentTransform
-        let force = simd_mul(currentTransform, simd_make_float4(0, 0, -3, 0))
+        sceneView.scene.rootNode.addChildNode(ballNode)
+        let force = simd_mul(currentTransform, simd_make_float4(0, 0, -2, 0))
         /// Applying force.
         ballNode.physicsBody?.applyForce(SCNVector3Make(force.x, force.y, force.z), asImpulse: true)
-        sceneView.scene.rootNode.addChildNode(ballNode)
     }
 }
 
