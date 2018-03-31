@@ -60,14 +60,22 @@
 			children = (
 				3EA26B29206F760500ED13EC /* AppDelegate.swift */,
 				3EA26B2B206F760500ED13EC /* art.scnassets */,
-				3EA26B2D206F760500ED13EC /* ViewController.swift */,
+				3EA26B3F206FCE2500ED13EC /* Views */,
 				3EA26B2F206F760500ED13EC /* Main.storyboard */,
 				3EA26B32206F760500ED13EC /* Assets.xcassets */,
 				3EA26B34206F760500ED13EC /* LaunchScreen.storyboard */,
 				3EA26B37206F760500ED13EC /* Info.plist */,
-				3EA26B3D206F77A400ED13EC /* ARInfoLabel.swift */,
 			);
 			path = ARMagic;
+			sourceTree = "<group>";
+		};
+		3EA26B3F206FCE2500ED13EC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3EA26B2D206F760500ED13EC /* ViewController.swift */,
+				3EA26B3D206F77A400ED13EC /* ARInfoLabel.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

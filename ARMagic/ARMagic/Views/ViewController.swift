@@ -121,6 +121,13 @@ class ViewController: UIViewController {
         configuration.planeDetection = .horizontal
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
+    
+    @IBAction func didTapOnMagicButton(_ sender: Any) {
+    }
+    
+    
+    @IBAction func didTapOnThrowButton(_ sender: Any) {
+    }
 }
 
 // MARK: - ARSCNViewDelegate
@@ -144,6 +151,10 @@ extension ViewController: ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         guard let anchor = anchor as? ARPlaneAnchor, let hatNode = hatNodeForAnchor(anchor)  else { return }
         node.addChildNode(hatNode)
+        /// Showing Magic and Throw ball options.
+        DispatchQueue.main.async { [weak self] in
+            self?.buttonsStackView.isHidden = false
+        }
     }
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {

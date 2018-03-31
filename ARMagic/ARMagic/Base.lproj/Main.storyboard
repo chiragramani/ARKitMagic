@@ -29,19 +29,25 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="uqo-Mq-WuW">
-                                <rect key="frame" x="16" y="593" width="343" height="50"/>
+                                <rect key="frame" x="16" y="577" width="343" height="50"/>
                                 <subviews>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ShO-qw-biF">
                                         <rect key="frame" x="0.0" y="0.0" width="161.5" height="50"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <state key="normal" title="Magic"/>
+                                        <connections>
+                                            <action selector="didTapOnMagicButton:" destination="uTa-dW-NpR" eventType="touchUpInside" id="DkR-yw-VtH"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jxO-yy-FlZ">
                                         <rect key="frame" x="181.5" y="0.0" width="161.5" height="50"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <state key="normal" title="Throw Ball"/>
+                                        <connections>
+                                            <action selector="didTapOnThrowButton:" destination="uTa-dW-NpR" eventType="touchUpInside" id="Bc6-a9-4Wx"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -53,7 +59,7 @@
                         <constraints>
                             <constraint firstItem="PPb-et-fyy" firstAttribute="top" secondItem="1fu-Gj-26v" secondAttribute="top" constant="20" id="H13-IZ-g6p"/>
                             <constraint firstItem="1fu-Gj-26v" firstAttribute="trailing" secondItem="uqo-Mq-WuW" secondAttribute="trailing" constant="16" id="H1t-Q8-6yd"/>
-                            <constraint firstItem="1fu-Gj-26v" firstAttribute="bottom" secondItem="uqo-Mq-WuW" secondAttribute="bottom" constant="24" id="HiX-O1-UM9"/>
+                            <constraint firstItem="1fu-Gj-26v" firstAttribute="bottom" secondItem="uqo-Mq-WuW" secondAttribute="bottom" constant="40" id="HiX-O1-UM9"/>
                             <constraint firstItem="CE9-dE-jWE" firstAttribute="leading" secondItem="1fu-Gj-26v" secondAttribute="leading" id="Qe0-iD-AO3"/>
                             <constraint firstItem="uqo-Mq-WuW" firstAttribute="leading" secondItem="1fu-Gj-26v" secondAttribute="leading" constant="16" id="Uwh-TR-drU"/>
                             <constraint firstItem="1fu-Gj-26v" firstAttribute="trailing" secondItem="CE9-dE-jWE" secondAttribute="trailing" id="dw2-Zf-XUx"/>
