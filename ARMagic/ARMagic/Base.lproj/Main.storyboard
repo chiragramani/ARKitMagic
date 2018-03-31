@@ -40,6 +40,7 @@
                         <viewLayoutGuide key="safeArea" id="1fu-Gj-26v"/>
                     </view>
                     <connections>
+                        <outlet property="infoLabel" destination="PPb-et-fyy" id="7Id-qH-TfY"/>
                         <outlet property="sceneView" destination="CE9-dE-jWE" id="nFu-2j-geS"/>
                     </connections>
                 </viewController>

@@ -11,7 +11,9 @@ import SceneKit
 import ARKit
 class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet var sceneView: ARSCNView!
-    enum MessageType {
+    @IBOutlet weak var infoLabel: ARInfoLabel!
+    private var dispatchWorkItem: DispatchWorkItem?
+    private enum MessageType {
         case moveTheDevice
         case sessionInterrupted
         case sessionInterruptionEnded
@@ -30,6 +32,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 return "Session was interrupted"
             }
         }
+    }
+    private enum InfoDisplayType {
+        case `static`
+        case hideAfterSeconds(TimeInterval)
     }
     
     override func viewDidLoad() {
@@ -75,6 +81,22 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let okayAction = UIAlertAction(title: "Okay", style: .default, handler: nil)
         alertController.addAction(okayAction)
         present(alertController, animated: true, completion: nil)
+    }
+    
+    private func displayMessage(type: MessageType, displayType: InfoDisplayType) {
+        dispatchWorkItem?.cancel()
+        infoLabel.text = type.displayMessage
+        infoLabel.isHidden = false
+        switch displayType {
+        case .static: break
+        case .hideAfterSeconds(let seconds):
+            dispatchWorkItem = DispatchWorkItem(block: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: { [weak self] in
+                    self?.infoLabel.isHidden = true
+                })
+            })
+            dispatchWorkItem?.perform()
+        }
     }
     
 
