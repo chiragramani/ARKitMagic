@@ -10,13 +10,20 @@ import UIKit
 import SceneKit
 import ARKit
 class ViewController: UIViewController {
+    /// IBOutlets.
+    
     @IBOutlet var sceneView: ARSCNView!
+    @IBOutlet weak var magicButton: UIButton!
     @IBOutlet weak var infoLabel: ARInfoLabel!
+    @IBOutlet weak var throwBallButton: UIButton!
+    @IBOutlet weak var buttonsStackView: UIStackView!
+    
     private var dispatchWorkItem: DispatchWorkItem?
     private var isMagicHatPlaced = false
     private enum MessageType {
         case moveTheDevice
         case sessionInterrupted
+        case featureNotSupported
         case sessionInterruptionEnded
         case sessionFailed(error: Error)
         
@@ -31,6 +38,8 @@ class ViewController: UIViewController {
                 return "Session failed: \(error.localizedDescription)"
             case .sessionInterrupted:
                 return "Session was interrupted"
+            case .featureNotSupported:
+                return "Sorry 😔, \nThis feature is not supported on your device."
             }
         }
     }
@@ -42,6 +51,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureButtons()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -52,10 +62,15 @@ class ViewController: UIViewController {
         }
     }
     
+    private func configureButtons() {
+        throwBallButton.layer.cornerRadius = 6
+        magicButton.layer.cornerRadius = 6
+    }
+    
     private func configureSceneView() {
         // Since we want plane detection which is only supported for ARWorldTrackingConfiguration.
         guard ARWorldTrackingConfiguration.isSupported else {
-            showNotSupportedAlert()
+            displayMessage(type: .featureNotSupported, displayType: .static)
             return
         }
         
@@ -80,15 +95,6 @@ class ViewController: UIViewController {
         super.viewWillDisappear(animated)
         // Pause the view's session
         sceneView.session.pause()
-    }
-    
-    private func showNotSupportedAlert() {
-        let alertController = UIAlertController(title: "Error",
-                                                message: "Sorry, this feature is not supported on your device.",
-                                                preferredStyle: .alert)
-        let okayAction = UIAlertAction(title: "Okay", style: .default, handler: nil)
-        alertController.addAction(okayAction)
-        present(alertController, animated: true, completion: nil)
     }
     
     private func displayMessage(type: MessageType, displayType: InfoDisplayType) {
