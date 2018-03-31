@@ -9,48 +9,74 @@
 import UIKit
 import SceneKit
 import ARKit
-
 class ViewController: UIViewController, ARSCNViewDelegate {
-
     @IBOutlet var sceneView: ARSCNView!
+    enum MessageType {
+        case moveTheDevice
+        case sessionInterrupted
+        case sessionInterruptionEnded
+        case sessionFailed(error: Error)
+        
+        /// Message to be displayed in the info label.
+        var displayMessage: String {
+            switch self {
+            case .moveTheDevice:
+                return "Hey, Welcome! 👋🏻 \n Lets start by aiming the camera at the floor.👇🏻"
+            case .sessionInterruptionEnded:
+                return "Session interruption ended"
+            case .sessionFailed(let error):
+                return "Session failed: \(error.localizedDescription)"
+            case .sessionInterrupted:
+                return "Session was interrupted"
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Set the view's delegate
-        sceneView.delegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        configureSceneView()
+    }
+    
+    private func configureSceneView() {
+        // Since we want plane detection which is only supported for ARWorldTrackingConfiguration.
+        guard ARWorldTrackingConfiguration.isSupported else {
+            showNotSupportedAlert()
+            return
+        }
         
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
         
-        // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
-        
-        // Set the scene to the view
-        sceneView.scene = scene
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Create a session configuration
+        // Start the view's AR session with a configuration that uses the rear camera,
+        // device position and orientation tracking, and plane detection.
         let configuration = ARWorldTrackingConfiguration()
-
-        // Run the view's session
-        sceneView.session.run(configuration)
+        configuration.planeDetection = .horizontal
+        sceneView.session.run(configuration, options: [])
+        
+        // Prevent the screen from being dimmed after a while as users will likely
+        // have long periods of interaction without touching the screen or buttons.
+        UIApplication.shared.isIdleTimerDisabled = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
         // Pause the view's session
         sceneView.session.pause()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
+    private func showNotSupportedAlert() {
+        let alertController = UIAlertController(title: "Error",
+                                                message: "Sorry, this feature is not supported on your device.",
+                                                preferredStyle: .alert)
+        let okayAction = UIAlertAction(title: "Okay", style: .default, handler: nil)
+        alertController.addAction(okayAction)
+        present(alertController, animated: true, completion: nil)
     }
+    
 
     // MARK: - ARSCNViewDelegate
     
