@@ -39,7 +39,5 @@ class ARInfoLabel: UILabel {
         /// Configuring corner radius.
         layer.masksToBounds = true
         layer.cornerRadius = 6
-        /// Text Alignment.
-        textAlignment = .center
     }
 }

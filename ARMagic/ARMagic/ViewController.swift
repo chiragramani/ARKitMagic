@@ -9,10 +9,11 @@
 import UIKit
 import SceneKit
 import ARKit
-class ViewController: UIViewController, ARSCNViewDelegate {
+class ViewController: UIViewController {
     @IBOutlet var sceneView: ARSCNView!
     @IBOutlet weak var infoLabel: ARInfoLabel!
     private var dispatchWorkItem: DispatchWorkItem?
+    private var isMagicHatPlaced = false
     private enum MessageType {
         case moveTheDevice
         case sessionInterrupted
@@ -23,7 +24,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         var displayMessage: String {
             switch self {
             case .moveTheDevice:
-                return "Hey, Welcome! 👋🏻 \n Lets start by aiming the camera at the floor.👇🏻"
+                return "Hey, Welcome! 👋🏻 \nLets start by aiming the camera at the floor.👇🏻"
             case .sessionInterruptionEnded:
                 return "Session interruption ended"
             case .sessionFailed(let error):
@@ -33,6 +34,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             }
         }
     }
+    
     private enum InfoDisplayType {
         case `static`
         case hideAfterSeconds(TimeInterval)
@@ -45,6 +47,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         configureSceneView()
+        if !isMagicHatPlaced && ARWorldTrackingConfiguration.isSupported {
+            displayMessage(type: .moveTheDevice, displayType: .static)
+        }
     }
     
     private func configureSceneView() {
@@ -53,6 +58,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             showNotSupportedAlert()
             return
         }
+        
+        // Setting scene view's delegate.
+        sceneView.delegate = self
         
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
@@ -99,30 +107,29 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
-
-    // MARK: - ARSCNViewDelegate
-    
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
+    private func resetTracking() {
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = .horizontal
+        sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
-*/
-    
+}
+
+// MARK: - ARSCNViewDelegate
+extension ViewController: ARSCNViewDelegate {
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
-        
+        displayMessage(type: .sessionFailed(error: error), displayType: .hideAfterSeconds(5))
     }
     
     func sessionWasInterrupted(_ session: ARSession) {
         // Inform the user that the session has been interrupted, for example, by presenting an overlay
-        
+        displayMessage(type: .sessionInterrupted, displayType: .hideAfterSeconds(3))
+        resetTracking()
     }
     
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
-        
+        displayMessage(type: .sessionInterruptionEnded, displayType: .hideAfterSeconds(3))
+        resetTracking()
     }
 }
