@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import SceneKit
 import ARKit
+
 class ViewController: UIViewController {
     /// IBOutlets.
     
@@ -24,6 +24,7 @@ class ViewController: UIViewController {
         case moveTheDevice
         case sessionInterrupted
         case featureNotSupported
+        case tapThrowBall
         case sessionInterruptionEnded
         case sessionFailed(error: Error)
         
@@ -38,6 +39,8 @@ class ViewController: UIViewController {
                 return "Session failed: \(error.localizedDescription)"
             case .sessionInterrupted:
                 return "Session was interrupted"
+            case .tapThrowBall:
+                return "Tap on \"Throw Ball\" to throw ball in the hat."
             case .featureNotSupported:
                 return "Sorry 😔, \nThis feature is not supported on your device."
             }
@@ -137,5 +140,27 @@ extension ViewController: ARSCNViewDelegate {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
         displayMessage(type: .sessionInterruptionEnded, displayType: .hideAfterSeconds(3))
         resetTracking()
+    }
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        guard let anchor = anchor as? ARPlaneAnchor, let hatNode = hatNodeForAnchor(anchor)  else { return }
+        node.addChildNode(hatNode)
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        guard let lightEstimate = sceneView.session.currentFrame?.lightEstimate,
+            let node = sceneView.scene.rootNode.childNode(withName: "omni", recursively: true) else { return }
+        node.light?.intensity = lightEstimate.ambientIntensity
+    }
+    
+    private func hatNodeForAnchor(_ anchor: ARPlaneAnchor) -> SCNNode? {
+        guard !isMagicHatPlaced,
+            let scene = SCNScene(named: "MagicHat.scn", inDirectory: "art.scnassets"),
+            let node = scene.rootNode.childNode(withName: "magicHat", recursively: false) else { return nil }
+        node.position = SCNVector3Make(anchor.center.x, 0, anchor.center.z)
+        DispatchQueue.main.async { [weak self] in
+            self?.displayMessage(type: .tapThrowBall, displayType: .hideAfterSeconds(4))
+        }
+        isMagicHatPlaced = true
+        return node
     }
 }
