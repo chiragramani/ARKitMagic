@@ -20,11 +20,13 @@ class ViewController: UIViewController {
     
     private var dispatchWorkItem: DispatchWorkItem?
     private var isMagicHatPlaced = false
+    private var ballNodes = [SCNNode]()
     private enum MessageType {
         case moveTheDevice
         case sessionInterrupted
         case featureNotSupported
         case tapThrowBall
+        case throwBallsToSeeMagic
         case sessionInterruptionEnded
         case sessionFailed(error: Error)
         
@@ -43,6 +45,8 @@ class ViewController: UIViewController {
                 return "Tap on \"Throw Ball\" to throw ball in the hat."
             case .featureNotSupported:
                 return "Sorry 😔, \nThis feature is not supported on your device."
+            case .throwBallsToSeeMagic:
+                return "Hmm..Throw balls inside 🎩 to see magic."
             }
         }
     }
@@ -123,18 +127,32 @@ class ViewController: UIViewController {
     }
     
     @IBAction func didTapOnMagicButton(_ sender: Any) {
+        guard !ballNodes.isEmpty else {
+            displayMessage(type: .throwBallsToSeeMagic, displayType: .hideAfterSeconds(5))
+            return
+        }
+        guard let hatNode = sceneView.scene.rootNode.childNode(withName: "magicHat", recursively: true),
+        let containingTubeNode = hatNode.childNode(withName: "bodyTube", recursively: true) else { return }
+        let ballsInsideHat = ballNodes.filter { containingTubeNode.contains(node: $0) }
+        if ballsInsideHat.isEmpty {
+            displayMessage(type: .throwBallsToSeeMagic, displayType: .hideAfterSeconds(5))
+            return
+        }
+        /// Toggling Hidden status for magic.
+        ballsInsideHat.forEach { $0.isHidden = !$0.isHidden }
     }
     
     
     @IBAction func didTapOnThrowButton(_ sender: Any) {
         guard let scene = SCNScene(named: "Ball.scn", inDirectory: "art.scnassets"),
-        let ballNode = scene.rootNode.childNode(withName: "ball", recursively: false),
-        let currentTransform = sceneView.session.currentFrame?.camera.transform else { return }
+            let ballNode = scene.rootNode.childNode(withName: "ball", recursively: false),
+            let currentTransform = sceneView.session.currentFrame?.camera.transform else { return }
         ballNode.simdTransform = currentTransform
         sceneView.scene.rootNode.addChildNode(ballNode)
         let force = simd_mul(currentTransform, simd_make_float4(0, 0, -2, 0))
         /// Applying force.
         ballNode.physicsBody?.applyForce(SCNVector3Make(force.x, force.y, force.z), asImpulse: true)
+        ballNodes.append(ballNode)
     }
 }
 
