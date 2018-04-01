@@ -21,6 +21,7 @@ class ViewController: UIViewController {
     private var dispatchWorkItem: DispatchWorkItem?
     private var isMagicHatPlaced = false
     private var ballNodes = [SCNNode]()
+    private var magicSound: SCNAudioSource!
     private enum MessageType {
         case moveTheDevice
         case sessionInterrupted
@@ -59,6 +60,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureButtons()
+        /// Preparation if feature is supported.
+        if ARWorldTrackingConfiguration.isSupported {
+            magicSound = SCNAudioSource(fileNamed: "art.scnassets/magic.mp3")
+            magicSound.load()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -141,6 +147,7 @@ class ViewController: UIViewController {
         /// Toggling Hidden status for magic.
         ballsInsideHat.forEach { $0.isHidden = !$0.isHidden }
         /// Playing Magic sound.
+        let soundAction = SCNAction.playAudio(magicSound, waitForCompletion: false)
     }
     
     
