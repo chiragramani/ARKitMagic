@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3E62F0FD2070D2AF0054E72C /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E62F0FC2070D2AF0054E72C /* Helpers.swift */; };
+		3E62F1002070E0A30054E72C /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E62F0FE2070E0A30054E72C /* spark.png */; };
+		3E62F1012070E0A30054E72C /* Sparkles.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 3E62F0FF2070E0A30054E72C /* Sparkles.scnp */; };
 		3EA26B2A206F760500ED13EC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA26B29206F760500ED13EC /* AppDelegate.swift */; };
 		3EA26B2C206F760500ED13EC /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EA26B2B206F760500ED13EC /* art.scnassets */; };
 		3EA26B2E206F760500ED13EC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA26B2D206F760500ED13EC /* ViewController.swift */; };
@@ -19,6 +21,8 @@
 
 /* Begin PBXFileReference section */
 		3E62F0FC2070D2AF0054E72C /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		3E62F0FE2070E0A30054E72C /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		3E62F0FF2070E0A30054E72C /* Sparkles.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = Sparkles.scnp; sourceTree = "<group>"; };
 		3EA26B26206F760500ED13EC /* ARMagic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARMagic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EA26B29206F760500ED13EC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3EA26B2B206F760500ED13EC /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -68,6 +72,8 @@
 				3EA26B34206F760500ED13EC /* LaunchScreen.storyboard */,
 				3EA26B37206F760500ED13EC /* Info.plist */,
 				3E62F0FC2070D2AF0054E72C /* Helpers.swift */,
+				3E62F0FE2070E0A30054E72C /* spark.png */,
+				3E62F0FF2070E0A30054E72C /* Sparkles.scnp */,
 			);
 			path = ARMagic;
 			sourceTree = "<group>";
@@ -139,9 +145,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E62F1002070E0A30054E72C /* spark.png in Resources */,
 				3EA26B2C206F760500ED13EC /* art.scnassets in Resources */,
 				3EA26B36206F760500ED13EC /* LaunchScreen.storyboard in Resources */,
 				3EA26B33206F760500ED13EC /* Assets.xcassets in Resources */,
+				3E62F1012070E0A30054E72C /* Sparkles.scnp in Resources */,
 				3EA26B31206F760500ED13EC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

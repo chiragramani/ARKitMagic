@@ -133,26 +133,40 @@ class ViewController: UIViewController {
     }
     
     @IBAction func didTapOnMagicButton(_ sender: Any) {
+        showMagicIfNeeded()
+    }
+    
+    @IBAction func didTapOnThrowButton(_ sender: Any) {
+        throwBall()
+    }
+    
+    private func showMagicIfNeeded() {
         guard !ballNodes.isEmpty else {
             displayMessage(type: .throwBallsToSeeMagic, displayType: .hideAfterSeconds(5))
             return
         }
         guard let hatNode = sceneView.scene.rootNode.childNode(withName: "magicHat", recursively: true),
-        let containingTubeNode = hatNode.childNode(withName: "bodyTube", recursively: true) else { return }
+            let containingTubeNode = hatNode.childNode(withName: "bodyTube", recursively: true) else { return }
         let ballsInsideHat = ballNodes.filter { containingTubeNode.contains(node: $0) }
         if ballsInsideHat.isEmpty {
             displayMessage(type: .throwBallsToSeeMagic, displayType: .hideAfterSeconds(5))
             return
         }
-        /// Toggling Hidden status for magic.
-        ballsInsideHat.forEach { $0.isHidden = !$0.isHidden }
+        /// Applying particle system.
+        let sparklesParticleSystem = SCNParticleSystem(named: "Sparkles.scnp", inDirectory: nil)!
+        sparklesParticleSystem.loops = false
+        sparklesParticleSystem.particleLifeSpan = 5
+        hatNode.addParticleSystem(sparklesParticleSystem)
+        
         /// Playing Magic sound.
         let soundAction = SCNAction.playAudio(magicSound, waitForCompletion: false)
         hatNode.runAction(soundAction)
+        
+        /// Toggling Hidden status for magic.
+        ballsInsideHat.forEach { $0.isHidden = !$0.isHidden }
     }
     
-    
-    @IBAction func didTapOnThrowButton(_ sender: Any) {
+    private func throwBall() {
         guard let scene = SCNScene(named: "Ball.scn", inDirectory: "art.scnassets"),
             let ballNode = scene.rootNode.childNode(withName: "ball", recursively: false),
             let currentTransform = sceneView.session.currentFrame?.camera.transform else { return }
