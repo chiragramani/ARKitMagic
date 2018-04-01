@@ -148,6 +148,7 @@ class ViewController: UIViewController {
         ballsInsideHat.forEach { $0.isHidden = !$0.isHidden }
         /// Playing Magic sound.
         let soundAction = SCNAction.playAudio(magicSound, waitForCompletion: false)
+        hatNode.runAction(soundAction)
     }
     
     
