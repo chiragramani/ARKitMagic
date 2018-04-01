@@ -140,6 +140,7 @@ class ViewController: UIViewController {
         }
         /// Toggling Hidden status for magic.
         ballsInsideHat.forEach { $0.isHidden = !$0.isHidden }
+        /// Playing Magic sound.
     }
     
     

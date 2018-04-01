@@ -12,10 +12,13 @@ import SceneKit
 
 extension SCNNode {
     func contains(node: SCNNode) -> Bool {
-        var (min, max) = presentation.boundingBox // Initialize both the max and min information for the hat tube at once
-        let size = max - min // Hat's tube size, you can also get the hat's position and use it over here
-        // Get the max and min using the position of the hat and gotten sizes
-        min = SCNVector3(presentation.worldPosition.x - size.x/2, presentation.worldPosition.y, presentation.worldPosition.z - size.z/2)
+        var (min, max) = presentation.boundingBox
+        let size = max - min
+        /*
+         I observed that the condition check -> node.presentation.worldPosition.y > min.y was failing all the time by a margin of 0.25.
+         That's why subtracting 0.25. I know its a hack - would really appreciate if you can show me the right way of doing it.
+         */
+        min = SCNVector3(presentation.worldPosition.x - size.x/2, presentation.worldPosition.y - 0.25, presentation.worldPosition.z - size.z/2)
         max = SCNVector3(presentation.worldPosition.x + size.x/2, presentation.worldPosition.y + size.y, presentation.worldPosition.z + size.z/2)
         return node.presentation.worldPosition.x > min.x &&
             node.presentation.worldPosition.y > min.y &&
