@@ -14,3 +14,7 @@ This repository contains resources for the ARKitMagic Project.
 ## Setup
 
 ARKitMagic runs on iOS devices having A9 and above processors.
+
+## Xcode version
+
+Build on Xcode 9.3
